@@ -1,0 +1,51 @@
+name: Update Data and Release CSV
+
+on:
+  schedule:
+    - cron: '15 10 13 5 *'
+  release:
+    types: [published]
+
+jobs:
+  update_data_and_release_csv:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements.txt
+        python -m pip install requests
+    
+    - name: Print Python version
+      run: python --version
+
+    - name: Print Python environment
+      run: |
+        python -m pip freeze
+        python -c "import sys; print(sys.executable)"
+    
+    - name: Run data update job
+      run: python data_update.py
+
+    - name: Update or append to release CSV
+      run: |
+        # Append new data to the CSV file (replace 'new_data.csv' with your actual file name)
+        echo "new_data_row" >> census_data.csv
+        
+
+    - name: Commit Changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add census_data.csv
+        git commit -m "Update release CSV"
+        git push
