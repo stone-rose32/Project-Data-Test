@@ -11,7 +11,7 @@ jobs:
     
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4    
+      uses: actions/checkout@v2    
 
     - name: Download release CSV
       run: |
@@ -34,10 +34,14 @@ jobs:
         git commit -m "Concatenate census_data.csv with release CSV"
         git push
 
+    - name: Get release upload URL
+      id: release_upload
+      run: echo "::set-output name=upload_url::$(jq -r '.repository.releases[0].upload_url' <<< ${{ toJson(github) }})"
+
     - name: Upload updated CSV to release assets
       uses: actions/upload-release-asset@v1
       with:
-        upload_url: ${{ github.event.repository.releases[0].upload_url }}
+        upload_url: ${{ steps.release_upload.outputs.upload_url }}
         asset_path: ./combined_data.csv
         asset_name: combined_data.csv
         asset_content_type: text/csv
