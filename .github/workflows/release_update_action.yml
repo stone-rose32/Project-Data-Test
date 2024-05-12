@@ -11,7 +11,7 @@ jobs:
     
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4    
+      uses: actions/checkout@v2    
 
     - name: Remove existing release CSV if exists
       run: |
@@ -24,6 +24,10 @@ jobs:
     - name: Add release CSV to Git
       run: |
         git add test_request.csv
+        git status
+
+    - name: Check status before committing
+      run: |
         git status
 
     - name: Concatenate census_data.csv and release CSV
