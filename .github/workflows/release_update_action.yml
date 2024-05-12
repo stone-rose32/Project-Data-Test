@@ -1,6 +1,5 @@
 name: Update Data and Release CSV
 
-
 on: 
   workflow_dispatch:
   #schedule:
@@ -12,18 +11,35 @@ jobs:
     
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2    
+      uses: actions/checkout@v4    
 
-    - name: Update or append to release CSV
+    - name: Rename current release file to test_data.csv
       run: |
-        # Append new data to the CSV file (replace 'new_data.csv' with your actual file name)
-        echo "new_data_row" >> census_data.csv
-        
+        mv census_data.csv test_data.csv
+
+    - name: Append new data to census_data.csv
+      run: |
+        cat new_data.csv >> census_data.csv
 
     - name: Commit Changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add census_data.csv
-        git commit -m "Update release CSV"
+        git add test_data.csv census_data.csv
+        git commit -m "Update release CSV with new data and rename to test_data.csv"
         git push
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v1
+        release_name: Release v1
+        body: |
+          Changes:
+          - Renamed census_data.csv to test_data.csv
+          - Added new data to census_data.csv
+        draft: false
+        prerelease: false
