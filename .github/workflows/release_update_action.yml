@@ -28,3 +28,12 @@ jobs:
         git add combined_data.csv
         git commit -m "Concatenate census_data.csv with release CSV"
         git push
+
+    - name: Upload updated CSV to release assets
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.repository.releases[0].upload_url }}
+        asset_path: ./combined_data.csv
+        asset_name: combined_data.csv
+        asset_content_type: text/csv
+        token: ${{ secrets.GITHUB_TOKEN }}
