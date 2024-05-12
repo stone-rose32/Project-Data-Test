@@ -57,6 +57,7 @@ def get_data_from_census(years, months, variables):
     for year in tqdm (years, desc="Loading..."):
       for month in months:
         url = call_url(year, month, variables)
+        print(url)
         data = get_data(url)
         yearcol = 'Year'
         monthcol = 'Month'
@@ -105,7 +106,7 @@ def update_data_job(current_year, current_month, variables, csv_file):
 
 def main():
     current_year = get_update_year()
-    current_month = 'jan'
+    current_month = ['jan']
     variables = ['CBSA', 'HEHOUSUT', 'HETENURE', 'HEFAMINC', 'HRNUMHOU', 'PEEDUCA', 'PESEX', 'PEMARITL', 'PEMLR', 'PWCMPWGT', 'HWHHWGT', 'PWFMWGT', 'PWLGWGT', 'PWORWGT', 'PWSSWGT']
     csv_file = 'census_data.csv'
     
