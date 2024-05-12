@@ -57,7 +57,6 @@ def get_data_from_census(years, months, variables):
     for year in tqdm (years, desc="Loading..."):
       for month in months:
         url = call_url(year, month, variables)
-        print(url)
         data = get_data(url)
         yearcol = 'Year'
         monthcol = 'Month'
