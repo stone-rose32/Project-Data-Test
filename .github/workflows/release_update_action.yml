@@ -2,7 +2,7 @@ name: Update Data and Release CSV
 
 on:
   schedule:
-    - cron: '30 11 * * *'
+    - cron: '25 11 * * *'
   release:
     types: [published]
 
