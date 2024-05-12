@@ -1,19 +1,17 @@
-name: Update Data and Release CSV
+name: Update Data
 
 on:
   schedule:
-    - cron: '15 17 12 5 *'
-  release:
-    types: [published]
+    - cron: '01 00 1 4 *'
 
 jobs:
-  update_data_and_release_csv:
+  update_data:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout Repository
+    - name: Checkout repository
       uses: actions/checkout@v2
-
+      
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -35,17 +33,3 @@ jobs:
     
     - name: Run data update job
       run: python data_update.py
-
-    - name: Update or append to release CSV
-      run: |
-        # Append new data to the CSV file (replace 'new_data.csv' with your actual file name)
-        echo "new_data_row" >> census_data.csv
-        
-
-    - name: Commit Changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add census_data.csv
-        git commit -m "Update release CSV"
-        git push
