@@ -11,7 +11,11 @@ jobs:
     
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2    
+      uses: actions/checkout@v4    
+
+    - name: Remove existing release CSV if exists
+      run: |
+        rm -f test_request.csv
 
     - name: Download release CSV
       run: |
