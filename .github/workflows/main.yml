@@ -33,3 +33,11 @@ jobs:
     
     - name: Run data update job
       run: python data_update.py
+
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "github action"
+        git add .
+        git commit -m "Add changes"
+        git push
