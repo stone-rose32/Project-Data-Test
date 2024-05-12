@@ -11,31 +11,20 @@ jobs:
     
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4    
+      uses: actions/checkout@v2    
 
-    - name: Append new data to census_data.csv
+    - name: Download release CSV
       run: |
-        cat census_data.csv >> test_data.csv
+        curl -LJO https://github.com/stone-rose32/Project-Data-Test/releases/download/v1.0.0/test_request.csv
+
+    - name: Concatenate census_data.csv and release CSV
+      run: |
+        cat census_data.csv test_request.csv > combined_data.csv
 
     - name: Commit Changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add test_data.csv census_data.csv
-        git commit -m "Update release CSV with new data and rename to test_data.csv"
+        git add combined_data.csv
+        git commit -m "Concatenate census_data.csv with release CSV"
         git push
-
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v1
-        release_name: Release v1
-        body: |
-          Changes:
-          - Renamed census_data.csv to test_data.csv
-          - Added new data to census_data.csv
-        draft: false
-        prerelease: false
