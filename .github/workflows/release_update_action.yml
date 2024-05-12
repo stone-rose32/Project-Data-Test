@@ -17,6 +17,11 @@ jobs:
       run: |
         curl -LJO https://github.com/stone-rose32/Project-Data-Test/releases/download/v1.0.0/test_request.csv
 
+    - name: Add release CSV to Git
+      run: |
+        git add test_request.csv
+        git status
+
     - name: Concatenate census_data.csv and release CSV
       run: |
         cat census_data.csv test_request.csv > combined_data.csv
