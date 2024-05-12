@@ -13,13 +13,9 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4    
 
-    - name: Rename current release file to test_data.csv
-      run: |
-        mv census_data.csv test_data.csv
-
     - name: Append new data to census_data.csv
       run: |
-        cat new_data.csv >> census_data.csv
+        cat census_data.csv >> test_data.csv
 
     - name: Commit Changes
       run: |
