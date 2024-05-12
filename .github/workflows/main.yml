@@ -1,34 +1,32 @@
-name: Update Data
-
+name: run main.yml
+ 
 on:
-  schedule:
-    - cron: '01 00 1 4 *'
-
+ 
+  workflow_dispatch:
+  #schedule:
+    #- cron: '0 0 1 * *'
 jobs:
-  update_data:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install -r requirements.txt
-    
-    - name: Run data update job
-      run: python data_update.py
-
-    - name: Commit files
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "github action"
-        git add .
-        git commit -m "Add changes"
-        git push
+      - name: checkout repo content
+        uses: actions/checkout@v4
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+ 
+      - name: install python packages
+        run: |
+          python -m pip install  --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: execute py script
+        run: python .github/workflows/data_update.py
+ 
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "github action"
+          git add .
+          git commit -m "Add changes"
+          git push
